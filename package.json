@@ -1,0 +1,10 @@
+{
+  "name": "level-collector-backend",
+  "version": "1.0.0",
+  "description": "Level Collector Backend",
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "uuid": "^2.0.3"
+  }
+}
