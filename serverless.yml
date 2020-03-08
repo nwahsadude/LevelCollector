@@ -61,6 +61,17 @@ functions:
           path: level/skip/{id}
           method: put
           cors: true
+  queue:
+    handler: queue.queue
+    events:
+      - http:
+          path: level/queue
+          method: get
+          cors: true
+          request:
+            parameters:
+              querystrings:
+                userName: true
 
 resources:
   Resources:
@@ -72,7 +83,6 @@ resources:
           -
             AttributeName: id
             AttributeType: S
-          - AttributeName:
         KeySchema:
           -
             AttributeName: id
