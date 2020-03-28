@@ -31,7 +31,7 @@ module.exports.queue = (event, context, callback) => {
 
     if(data.length > 0){
       data.sort((a, b) => {
-        return a.createdAt > b.createdAt
+        return a.createdAt - b.createdAt
       })
     } else {
       return [];
@@ -55,7 +55,7 @@ module.exports.queue = (event, context, callback) => {
     let returnMessage;
 
     if(position === 0 && noLevel === true){
-      returnMessage = `@${queryString.userName} you have no levels submitted`
+      returnMessage = `@${queryString.userName} you have no levels in the queue`
     } else {
       returnMessage = `@${queryString.userName} there are ${position} levels before your level`
     }

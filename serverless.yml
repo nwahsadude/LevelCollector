@@ -26,7 +26,7 @@ functions:
     events:
       - http:
           path: level
-          method: post
+          method: get
           cors: true
           request:
             parameters:
@@ -37,7 +37,7 @@ functions:
     handler: list.list
     events:
       - http:
-          path: level
+          path: level/list
           method: get
           cors: true
   update:

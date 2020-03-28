@@ -10,6 +10,14 @@ module.exports.create = (event, context, callback) => {
     let queryString = event.queryStringParameters;
 
 
+    if(queryString.levelCode.length !== 11){
+        const response = {
+            statusCode: 200,
+            body: `@${queryString.userName} this level code is not valid`
+        };
+        callback(null, response);
+    }
+
     const params = {
         TableName: process.env.DYNAMODB_TABLE,
         Item: {
@@ -50,7 +58,7 @@ module.exports.create = (event, context, callback) => {
                     callback(null, {
                         statusCode: error.statusCode || 501,
                         headers: { 'Content-Type': 'text/plain' },
-                        body: 'Couldn\'t create the todo item.',
+                        body: 'Couldn\'t create the todo item.'
                     });
                     return;
                 }
@@ -58,7 +66,7 @@ module.exports.create = (event, context, callback) => {
                 // create a response
                 const response = {
                     statusCode: 200,
-                    body: JSON.stringify(params.Item),
+                    body: `@${queryString.userName} your level has been submitted!`,
                 };
                 callback(null, response);
             });
