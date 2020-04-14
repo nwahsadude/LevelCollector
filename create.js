@@ -7,6 +7,7 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.exports.create = (event, context, callback) => {
   const timestamp = new Date().getTime();
+  console.log(event.queryStringParameters);
   let queryString = event.queryStringParameters;
 
   if (queryString.levelCode.length !== 11) {
@@ -46,6 +47,7 @@ module.exports.create = (event, context, callback) => {
       return (
         !value.skipped &&
         !value.cleared &&
+        !value.completed &&
         queryString.levelCode === value.levelCode
       );
     });
@@ -54,6 +56,7 @@ module.exports.create = (event, context, callback) => {
       return (
         !value.skipped &&
         !value.cleared &&
+        !value.completed &&
         value.userName === queryString.userName
       );
     });
@@ -75,13 +78,22 @@ module.exports.create = (event, context, callback) => {
         body: `@${queryString.userName} this level has already been submitted`
       };
       callback(null, response);
-    } else if (usersLevels.length > 0 && data.length === 0) {
+    } else if (usersLevels.length > 0) {
       const response = {
         headers: {
           "Access-Control-Allow-Origin": "*"
         },
         statusCode: 200,
         body: `@${queryString.userName} please wait until your level has been played before submitting another.`
+      };
+      callback(null, response);
+    } else {
+      const response = {
+        headers: {
+          "Access-Control-Allow-Origin": "*"
+        },
+        statusCode: 200,
+        body: `Something went wrong and Nightbot is confused.`
       };
       callback(null, response);
     }
