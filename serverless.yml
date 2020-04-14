@@ -40,6 +40,13 @@ functions:
           path: level/list
           method: get
           cors: true
+  current-level:
+    handler: current-level.currentLevel
+    events:
+      - http:
+          path: level/current-level
+          method: get
+          cors: true
   update:
     handler: clear.clear
     events:

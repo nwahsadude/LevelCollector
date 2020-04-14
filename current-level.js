@@ -7,7 +7,7 @@ const params = {
     TableName: process.env.DYNAMODB_TABLE,
 };
 
-module.exports.list = (event, context, callback) => {
+module.exports.currentLevel = (event, context, callback) => {
     dynamoDb.scan(params, (error, result) => {
         // handle potential errors
         if (error) {
@@ -23,14 +23,23 @@ module.exports.list = (event, context, callback) => {
         const data = result.Items.filter(value => {
             return !value.completed && !value.skipped && !value.cleared
         });
+        data.sort((a, b) => {
+            return a.createdAt - b.createdAt
+        });
+        let responseText;
 
+        if(data.length > 0){
+            responseText = `The current level code is ${data[0].levelCode.toUpperCase()}`
+        } else {
+            responseText = "There are no levels"
+        }
         // create a response
         const response = {
             headers: {
                 "Access-Control-Allow-Origin": "*"
             },
             statusCode: 200,
-            body: `There are ${data.length} levels in the queue`,
+            body: responseText,
         };
         callback(null, response);
     });
